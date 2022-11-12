@@ -1,116 +1,108 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
+  <q-layout view="hhh lpr fff">
+    <q-header class="header">
+      <text-h1 class="text-black text-weight-bold">Почтовый клиент</text-h1>
     </q-header>
+    <div class="row items-start">
+      <q-btn-group class="menu column inline items-start example-container" style="width: 300px; margin-top: 50px;">
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
+        <q-btn-group push class="menu__footer-button">
+          <q-btn text-color="black" push label="Отправить" icon="send" />
+          <q-btn text-color="black" push label="Получить" icon="call_received" />
+        </q-btn-group>
+      </q-btn-group>
+      <div class="col-md-auto" style="width: calc(100% - 300px); margin-top: 50px">
+        <MailComponent v-for="mail in mailComponent" :key="mail.title" v-bind="mail" />
+      </div>
+    </div>
   </q-layout>
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import MailComponent from 'components/MailComponent.vue'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Входящие',
+    icon: 'email',
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: 'Отправленные',
+    icon: 'mail_outline',
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
+    title: 'Черновики',
     icon: 'chat',
-    link: 'https://chat.quasar.dev'
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    title: 'Корзина',
+    icon: 'folder_delete',
+  },
+]
+
+const messageList = [
+  {
+    title: 'Я',
+    message: 'ddddd',
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
+    title: 'Отправил',
+    message: 'ddddd',
   },
   {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
+    title: 'Письма',
+    message: 'ddddd',
   },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
 ]
 
 export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    EssentialLink
+    EssentialLink,
+    MailComponent,
   },
 
-  setup () {
+  setup() {
     const leftDrawerOpen = ref(false)
 
     return {
       essentialLinks: linksList,
+      mailComponent: messageList,
       leftDrawerOpen,
-      toggleLeftDrawer () {
+      toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
   }
 })
 </script>
+
+<style lang="scss">
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  line-height: 50px;
+  width: 100%;
+  background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);
+}
+
+.menu {
+  position: relative;
+  height: 100%;
+}
+
+.menu__footer-button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 50px;
+  width: calc(100% - 20px);
+  margin: 10px;
+}
+</style>
