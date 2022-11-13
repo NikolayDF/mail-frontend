@@ -1,9 +1,6 @@
 <template>
-  <q-btn style="width: 100%">
-    <q-item-section v-if="icon" avatar>
-      <q-icon :name="icon" />
-    </q-item-section>
-
+  <q-btn :to=address style="width: 100%">
+    <q-icon :name="icon" />
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
     </q-item-section>
@@ -20,17 +17,10 @@ export default defineComponent({
       type: String,
       required: true
     },
-
-    caption: {
+    address: {
       type: String,
-      default: ''
+      default: '/'
     },
-
-    link: {
-      type: String,
-      default: '#'
-    },
-
     icon: {
       type: String,
       default: ''

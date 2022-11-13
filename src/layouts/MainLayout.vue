@@ -16,31 +16,43 @@
           :deleteMail="deleteMail" />
       </div>
     </div>
+
+    <q-page-container>
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
+    </q-page-container>
   </q-layout>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
 import { useDataMailStore } from 'stores/dataMail'
-import EssentialLink from 'components/EssentialLink.vue'
+import EssentialLink from 'src/components/ButtonNavigate.vue'
 import MailComponent from 'components/MailComponent.vue'
 
 const linksList = [
   {
     title: 'Входящие',
     icon: 'email',
+    address: '/',
   },
   {
     title: 'Отправленные',
     icon: 'mail_outline',
+    address: '/send',
   },
   {
     title: 'Черновики',
     icon: 'chat',
+    address: '/draft',
   },
   {
     title: 'Корзина',
     icon: 'folder_delete',
+    address: '/basket',
   },
 ]
 
