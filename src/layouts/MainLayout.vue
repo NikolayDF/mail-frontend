@@ -1,11 +1,10 @@
 <template>
   <q-layout view="hhh lpr fff">
-    <q-header class="header">
-      <text-h1 class="text-black text-weight-bold">Почтовый клиент</text-h1>
+    <q-header class="header ">
+      <h1 class="header__title text-black text-weight-bold">Почтовый клиент</h1>
     </q-header>
-    <div class="row items-start">
-      <q-btn-group class="menu column inline items-start example-container" style="width: 300px; margin-top: 50px;">
-
+    <div class="row items-start justify-end">
+      <q-btn-group class="menu column inline items-end example-container">
         <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
         <q-btn-group push class="menu__footer-button">
           <q-btn text-color="black" push label="Отправить" icon="send" />
@@ -13,14 +12,16 @@
         </q-btn-group>
       </q-btn-group>
       <div class="col-md-auto" style="width: calc(100% - 300px); margin-top: 50px">
-        <MailComponent v-for="mail in mailComponent" :key="mail.title" v-bind="mail" />
+        <MailComponent v-for="mailItem in mail.mailData" :key="mailItem.id" v-bind="mailItem"
+          :deleteMail="deleteMail" />
       </div>
     </div>
   </q-layout>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
+import { useDataMailStore } from 'stores/dataMail'
 import EssentialLink from 'components/EssentialLink.vue'
 import MailComponent from 'components/MailComponent.vue'
 
@@ -43,21 +44,6 @@ const linksList = [
   },
 ]
 
-const messageList = [
-  {
-    title: 'Я',
-    message: 'ddddd',
-  },
-  {
-    title: 'Отправил',
-    message: 'ddddd',
-  },
-  {
-    title: 'Письма',
-    message: 'ddddd',
-  },
-]
-
 export default defineComponent({
   name: 'MainLayout',
 
@@ -65,17 +51,17 @@ export default defineComponent({
     EssentialLink,
     MailComponent,
   },
-
+  methods: {
+    deleteMail(id) {
+      this.mail.delete(id);
+    }
+  },
   setup() {
-    const leftDrawerOpen = ref(false)
+    const mail = useDataMailStore();
 
     return {
       essentialLinks: linksList,
-      mailComponent: messageList,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      mail,
     }
   }
 })
@@ -83,18 +69,30 @@ export default defineComponent({
 
 <style lang="scss">
 .header {
+  position: fixed;
+  left: 0;
+  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
-  line-height: 50px;
   width: 100%;
   background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);
 }
 
+.header__title {
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  line-height: 50px;
+}
+
 .menu {
-  position: relative;
+  position: fixed;
+  left: 0;
+  top: 0;
   height: 100%;
+  width: 300px;
+  margin-top: 50px;
 }
 
 .menu__footer-button {
@@ -102,7 +100,7 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   height: 50px;
-  width: calc(100% - 20px);
-  margin: 10px;
+  width: 290px;
+  margin: 5px;
 }
 </style>
