@@ -9,11 +9,11 @@
 <script>
 
 import { defineComponent } from 'vue'
-import { useSendMailStore } from 'stores/sendMail'
+import { useDraftMailStore } from 'stores/draftMail'
 import MailComponent from 'components/MailComponent.vue'
 
 export default defineComponent({
-  name: 'MailSend',
+  name: 'MailDraft',
 
   components: {
     MailComponent,
@@ -24,8 +24,9 @@ export default defineComponent({
     }
   },
   setup() {
-    const mail = useSendMailStore();
+    const mail = useDraftMailStore();
     return { mail };
   }
 })
 </script>
+

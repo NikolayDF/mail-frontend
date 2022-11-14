@@ -9,11 +9,11 @@
 <script>
 
 import { defineComponent } from 'vue'
-import { useSendMailStore } from 'stores/sendMail'
+import { useBasketMailStore } from 'stores/basketMail'
 import MailComponent from 'components/MailComponent.vue'
 
 export default defineComponent({
-  name: 'MailSend',
+  name: 'MailBasket',
 
   components: {
     MailComponent,
@@ -24,8 +24,9 @@ export default defineComponent({
     }
   },
   setup() {
-    const mail = useSendMailStore();
+    const mail = useBasketMailStore();
     return { mail };
   }
 })
 </script>
+

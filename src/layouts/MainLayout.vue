@@ -5,19 +5,15 @@
     </q-header>
     <div class="row items-start justify-end">
       <q-btn-group class="menu column inline items-end example-container">
-        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
+        <ButtonNavigate v-for="button in buttonList" :key="button.title" v-bind="button" />
         <q-btn-group push class="menu__footer-button">
           <q-btn text-color="black" push label="Отправить" icon="send" />
           <q-btn text-color="black" push label="Получить" icon="call_received" />
         </q-btn-group>
       </q-btn-group>
-      <div class="col-md-auto" style="width: calc(100% - 300px); margin-top: 50px">
-        <MailComponent v-for="mailItem in mail.mailData" :key="mailItem.id" v-bind="mailItem"
-          :deleteMail="deleteMail" />
-      </div>
     </div>
 
-    <q-page-container>
+    <q-page-container style="width: calc(100% - 300px); margin-left: auto;">
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component :is="Component" />
@@ -29,11 +25,9 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { useDataMailStore } from 'stores/dataMail'
-import EssentialLink from 'src/components/ButtonNavigate.vue'
-import MailComponent from 'components/MailComponent.vue'
+import ButtonNavigate from 'src/components/ButtonNavigate.vue'
 
-const linksList = [
+const buttonList = [
   {
     title: 'Входящие',
     icon: 'email',
@@ -60,20 +54,11 @@ export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    EssentialLink,
-    MailComponent,
-  },
-  methods: {
-    deleteMail(id) {
-      this.mail.delete(id);
-    }
+    ButtonNavigate,
   },
   setup() {
-    const mail = useDataMailStore();
-
     return {
-      essentialLinks: linksList,
-      mail,
+      buttonList,
     }
   }
 })
