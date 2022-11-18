@@ -1,8 +1,9 @@
 <template>
-  <q-page class="flex flex-start justify-end">
-    <div class="col-md-auto" style="width: 100%">
+  <q-page class="flex">
+    <q-scroll-area style="width: 100%;">
       <MailComponent v-for="mailItem in mail.mailData" :key="mailItem.id" v-bind="mailItem" :deleteMail="deleteMail" />
-    </div>
+      <q-scroll-observer @scroll="scrollHandler" />
+    </q-scroll-area>
   </q-page>
 </template>
 

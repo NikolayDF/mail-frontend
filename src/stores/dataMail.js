@@ -48,6 +48,26 @@ export const useDataMailStore = defineStore('dataMail', {
           title: 'Письма3',
           message: 'ddddd',
           id: '9',
+        },
+        {
+          title: 'Отправил3',
+          message: 'ddddd',
+          id: '8',
+        },
+        {
+          title: 'Письма3',
+          message: 'ddddd',
+          id: '9',
+        },
+        {
+          title: 'Отправил3',
+          message: 'ddddd',
+          id: '10',
+        },
+        {
+          title: 'Письма3',
+          message: 'ddddd',
+          id: '11',
         },]
     }
   },

@@ -1,25 +1,29 @@
 <template>
-  <q-layout view="hhh lpr fff">
+  <q-layout view="hhh lpr fff" class="page">
     <q-header class="header">
+      <q-btn flat @click="drawerLeft = !drawerLeft" class="menu__button-open" color="black" round dense
+        icon="density_medium" />
       <h1 class="header__title text-black text-weight-bold">Почтовый клиент</h1>
     </q-header>
-    <div class="row items-start justify-end">
-      <q-btn-group class="menu column inline items-end example-container">
+    <q-drawer v-model="drawerLeft" show-if-above bordered persistent :breakpoint="500" style="background: transparent">
+      <!--<div class="row items-start justify-end">-->
+      <q-btn-group class="menu column content-start">
         <ButtonNavigate v-for="button in buttonList" :key="button.title" v-bind="button" />
-        <q-btn-group push class="menu__footer-button">
+        <q-btn-group push class="menu__footer-button content-end" style="margin-top: auto;">
           <q-btn text-color="black" push label="Отправить" icon="send" />
           <q-btn text-color="black" push label="Получить" icon="cached" />
         </q-btn-group>
-        <div color="primary" style="width: 300px; height: 50px; background-color: black;" @drop="onDrop($event, list)"
+        <!--<div color="primary" style="width: 300px; height: 50px; background-color: black;" @drop="onDrop($event, list)"
           @dragover.prevent @dragenter.prevent>
-        </div>
+        </div>-->
       </q-btn-group>
+      <!--</div>-->
+    </q-drawer>
 
-    </div>
     <q-btn round color="primary" class="menu__button-new-mail" icon="add" />
     <FormMail />
 
-    <q-page-container style="width: calc(100% - 300px); margin-left: auto;">
+    <q-page-container>
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component :is="Component" />
@@ -30,7 +34,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import ButtonNavigate from 'src/components/ButtonNavigate.vue';
 import FormMail from 'src/components/FormMail.vue';
 
@@ -81,12 +85,22 @@ export default defineComponent({
     return {
       buttonList,
       mail,
+      drawerLeft: ref(false),
     }
   }
 })
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+:deep(aside) {
+  /* переопределяем цвет элемента появляющегося автоматически */
+  background-color: transparent;
+}
+
+.page {
+  background-image: linear-gradient(to left, #d7d5d5, transparent, #d7d5d5);
+}
+
 .header {
   position: fixed;
   left: 0;
@@ -95,7 +109,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   width: 100%;
-  background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);
+  background-image: linear-gradient(to left, #d7d5d5, #fff, #d7d5d5);
 }
 
 .header__title {
@@ -109,18 +123,24 @@ export default defineComponent({
   position: fixed;
   left: 0;
   top: 0;
-  height: 100%;
+  display: flex;
+  border-radius: 0;
   width: 300px;
-  margin-top: 50px;
+  height: 100%;
 }
 
 .menu__footer-button {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  margin-top: 100px;
   height: 50px;
   width: 290px;
   margin: 5px;
+}
+
+.menu__button-open {
+  position: absolute;
+  width: 34px;
+  left: 10px;
+  top: 8px;
 }
 
 .menu__button-new-mail {
