@@ -5,7 +5,7 @@
         icon="density_medium" />
       <h1 class="header__title text-black text-weight-bold">Почтовый клиент</h1>
     </q-header>
-    <q-drawer v-model="drawerLeft" show-if-above bordered persistent :breakpoint="500" style="background: transparent">
+    <q-drawer v-model="drawerLeft" show-if-above bordered persistent :breakpoint="500">
       <!--<div class="row items-start justify-end">-->
       <q-btn-group class="menu column content-start">
         <ButtonNavigate v-for="button in buttonList" :key="button.title" v-bind="button" />
@@ -20,8 +20,8 @@
       <!--</div>-->
     </q-drawer>
 
-    <q-btn round color="primary" class="menu__button-new-mail" icon="add" />
-    <FormMail />
+    <q-btn round @click="popupOpen = !popupOpen" color="grey-6" class="menu__button-new-mail" icon="add" />
+    <FormMail v-model="popupOpen" :popupOpen="popupOpen" v-on:popup-close="popupClose" />
 
     <q-page-container>
       <router-view v-slot="{ Component }">
@@ -79,13 +79,30 @@ export default defineComponent({
       /*const item = this.items.find((item) => item.id == itemID)
       item.list = list*/
     },
+    popupClose() {
+      this.popupOpen = false;
+      console.log('dd')
+    },
+    /*onResize() {
+      this.windowWidth = window.innerWidth
+    }*/
   },
+  /*mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize);
+    })
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  },*/
   setup() {
     const mail = useDataMailStore();
     return {
       buttonList,
       mail,
       drawerLeft: ref(false),
+      popupOpen: ref(false),
+      /*window: window.innerWidth,*/
     }
   }
 })
@@ -95,6 +112,13 @@ export default defineComponent({
 :deep(aside) {
   /* переопределяем цвет элемента появляющегося автоматически */
   background-color: transparent;
+}
+
+@media all and (max-width: 500px) {
+  :deep(aside) {
+    /* переопределяем цвет элемента появляющегося автоматически */
+    background-color: #edebeb;
+  }
 }
 
 .page {
