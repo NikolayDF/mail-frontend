@@ -6,18 +6,37 @@
       <h1 class="header__title text-black text-weight-bold">Почтовый клиент</h1>
     </q-header>
     <q-drawer v-model="drawerLeft" show-if-above bordered persistent :breakpoint="500">
-      <!--<div class="row items-start justify-end">-->
       <q-btn-group class="menu column content-start">
-        <ButtonNavigate v-for="button in buttonList" :key="button.title" v-bind="button" />
+        <q-btn to="/" exact style="width: 100%" :class="[path === '/' ? 'menu__button_active ' : '']">
+          <q-icon name="email" />
+          <q-item-section>
+            <q-item-label>Входящие</q-item-label>
+          </q-item-section>
+        </q-btn>
+        <q-btn to="/send" exact style="width: 100%" :class="[path === '/send' ? 'menu__button_active ' : '']">
+          <q-icon name="mail_outline" />
+          <q-item-section>
+            <q-item-label>Отправленные</q-item-label>
+          </q-item-section>
+        </q-btn>
+        <q-btn to="/draft" exact style="width: 100%" :class="[path === '/draft' ? 'menu__button_active ' : '']">
+          <q-icon name="chat" />
+          <q-item-section>
+            <q-item-label>Черновики</q-item-label>
+          </q-item-section>
+        </q-btn>
+        <q-btn to="/basket" exact style="width: 100%" :class="[path === '/basket' ? 'menu__button_active ' : '']"
+          @drop="onDrop($event, list)" @dragover.prevent @dragenter.prevent>
+          <q-icon name="folder_delete" />
+          <q-item-section>
+            <q-item-label>Корзина</q-item-label>
+          </q-item-section>
+        </q-btn>
         <q-btn-group push class="menu__footer-button content-end" style="margin-top: auto;">
           <q-btn text-color="black" push label="Отправить" icon="send" />
           <q-btn text-color="black" push label="Получить" icon="cached" />
         </q-btn-group>
-        <!--<div color="primary" style="width: 300px; height: 50px; background-color: black;" @drop="onDrop($event, list)"
-          @dragover.prevent @dragenter.prevent>
-        </div>-->
       </q-btn-group>
-      <!--</div>-->
     </q-drawer>
 
     <q-btn round @click="popupOpen = !popupOpen" color="grey-6" class="menu__button-new-mail" icon="add" />
@@ -34,40 +53,15 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
-import ButtonNavigate from 'src/components/ButtonNavigate.vue';
-import FormMail from 'src/components/FormMail.vue';
-
-const buttonList = [
-  {
-    title: 'Входящие',
-    icon: 'email',
-    address: '/',
-  },
-  {
-    title: 'Отправленные',
-    icon: 'mail_outline',
-    address: '/send',
-  },
-  {
-    title: 'Черновики',
-    icon: 'chat',
-    address: '/draft',
-  },
-  {
-    title: 'Корзина',
-    icon: 'folder_delete',
-    address: '/basket',
-  },
-]
-
-import { useDataMailStore } from 'stores/dataMail'
+import { defineComponent, ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import FormMail from 'src/components/FormSaveMail.vue';
+import { useInMailStore } from 'src/stores/inMail';
 
 export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    ButtonNavigate,
     FormMail,
   },
   methods: {
@@ -83,26 +77,17 @@ export default defineComponent({
       this.popupOpen = false;
       console.log('dd')
     },
-    /*onResize() {
-      this.windowWidth = window.innerWidth
-    }*/
   },
-  /*mounted() {
-    this.$nextTick(() => {
-      window.addEventListener('resize', this.onResize);
-    })
-  },
-  beforeUnmount() {
-    window.removeEventListener('resize', this.onResize);
-  },*/
   setup() {
-    const mail = useDataMailStore();
+    const mail = useInMailStore();
+    const route = useRoute();
+
+    const path = computed(() => route.path)
     return {
-      buttonList,
       mail,
       drawerLeft: ref(false),
       popupOpen: ref(false),
-      /*window: window.innerWidth,*/
+      path,
     }
   }
 })
@@ -151,6 +136,10 @@ export default defineComponent({
   border-radius: 0;
   width: 300px;
   height: 100%;
+}
+
+.menu__button_active {
+  background-color: #b6b5b5;
 }
 
 .menu__footer-button {

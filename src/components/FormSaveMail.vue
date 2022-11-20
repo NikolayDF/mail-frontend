@@ -2,9 +2,7 @@
   <div :class="[popupOpen ? 'popup popup_open' : 'popup']">
     <q-form class="q-gutter-md form">
       <q-input filled label="Кому" lazy-rules style="width: 97%;"></q-input>
-      <div class="q-pa-md" filled>
-        <q-input filled type="textarea" />
-      </div>
+      <q-input filled type="textarea" class="form__text" rows="20" />
       <q-btn-group class="fit  justify-between push square" style="box-shadow: none; width: 97% !important">
         <q-btn class="form__button" label="Закрыть" type="button" color="grey-8" v-on:click="$emit('popup-close')">
         </q-btn>
@@ -41,6 +39,12 @@ export default defineComponent({
 
 .form__button {
   height: 30px;
+}
+
+.form__text {
+  margin: 20px auto 50px;
+  width: 97%;
+  height: 60%;
 }
 
 .popup {

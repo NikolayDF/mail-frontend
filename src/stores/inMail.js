@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useDataMailStore = defineStore('dataMail', {
+export const useInMailStore = defineStore('inMail', {
   state: () => {
     return {
       mailData: [

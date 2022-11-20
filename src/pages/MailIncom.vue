@@ -9,7 +9,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { useDataMailStore } from 'stores/dataMail'
+import { useInMailStore } from 'src/stores/inMail'
 import MailComponent from 'components/MailComponent.vue'
 
 export default defineComponent({
@@ -24,7 +24,7 @@ export default defineComponent({
     }
   },
   setup() {
-    const mail = useDataMailStore();
+    const mail = useInMailStore();
 
     return { mail }
   }
