@@ -2,7 +2,7 @@
   <q-card :draggable=pathBoolBasket @dragstart="startDrag($event, id)" @dragend="endDrag"
     class="mail my-card text-black cursor-pointer">
     <q-card-section class="full-width row no-wrap justify-between items-center content-start ">
-      <div class="text-h6 col-2">{{ title }}</div>
+      <div class="text-h6 col-2">{{ theme }}</div>
       <div class="text-subtitle2 col">{{ message }}</div>
       <q-btn v-on:click="deleteMail(id)" icon="delete" class="col-1" round style="width: 50px; height: 50px;" />
     </q-card-section>
@@ -18,7 +18,7 @@ import { useDragADropStore } from '../stores/dragAdrop.js';
 export default defineComponent({
   name: 'MailComponent',
   props: {
-    title: {
+    theme: {
       type: String,
       default: ''
     },

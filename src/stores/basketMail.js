@@ -5,12 +5,12 @@ export const useBasketMailStore = defineStore('bascetMail', {
     return {
       mailData: [
         {
-          title: 'Я Отправил',
+          theme: 'Я Отправил',
           message: 'ddddd draft',
           id: 100,
         },
         {
-          title: 'Delite',
+          theme: 'Delite',
           message: 'ddddd draft',
           id: 200,
         },]

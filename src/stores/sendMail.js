@@ -5,17 +5,17 @@ export const useSendMailStore = defineStore('sendMail', {
     return {
       mailData: [
         {
-          title: 'Я Отправил',
+          theme: 'Я Отправил',
           message: 'ddddd',
           id: 10,
         },
         {
-          title: 'Отправил Отправил',
+          theme: 'Отправил Отправил',
           message: 'ddddd',
           id: 20,
         },
         {
-          title: 'Письма Отправил',
+          theme: 'Письма Отправил',
           message: 'ddddd Отправил',
           id: 30,
         },]

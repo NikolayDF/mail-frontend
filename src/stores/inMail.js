@@ -5,22 +5,22 @@ export const useInMailStore = defineStore('inMail', {
     return {
       mailData: [
         {
-          title: 'Я',
+          theme: 'Я',
           message: 'ddddd',
           id: 1,
         },
         {
-          title: 'Отправил',
+          theme: 'Отправил',
           message: 'ddddd',
           id: 2,
         },
         {
-          title: 'Письма',
+          theme: 'Письма',
           message: 'ddddd',
           id: 3,
         },
         {
-          title: 'Я1',
+          theme: 'Я1',
           message: 'ddddd',
           id: 4,
         },]

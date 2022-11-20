@@ -5,17 +5,17 @@ export const useDraftMailStore = defineStore('draftMail', {
     return {
       mailData: [
         {
-          title: 'Я Отправил',
+          theme: 'Я Отправил',
           message: 'ddddd draft',
           id: 123,
         },
         {
-          title: 'Отправил Отправил',
+          theme: 'Отправил Отправил',
           message: 'ddddd draft',
           id: 223,
         },
         {
-          title: 'Письма Отправил',
+          theme: 'Письма Отправил',
           message: 'ddddd Отправил draft',
           id: 323,
         },]
