@@ -1,5 +1,6 @@
 <template>
-  <q-card :id=id draggable="true" @dragstart="startDrag($event, id)" class="mail my-card text-black cursor-pointer">
+  <q-card :draggable=pathBoolBasket @dragstart="startDrag($event, id)" @dragend="endDrag"
+    class="mail my-card text-black cursor-pointer">
     <q-card-section class="full-width row no-wrap justify-between items-center content-start ">
       <div class="text-h6 col-2">{{ title }}</div>
       <div class="text-subtitle2 col">{{ message }}</div>
@@ -9,7 +10,10 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { useRoute } from 'vue-router';
+
+import { useDragADropStore } from '../stores/dragAdrop.js';
 
 export default defineComponent({
   name: 'MailComponent',
@@ -23,7 +27,7 @@ export default defineComponent({
       default: ''
     },
     id: {
-      type: String,
+      type: Number,
     },
     deleteMail: {
       type: Function,
@@ -31,13 +35,30 @@ export default defineComponent({
   },
   methods: {
     startDrag(evt, id) {
-      evt.dataTransfer.dropEffect = 'move'
-      evt.dataTransfer.effectAllowed = 'move'
-      evt.dataTransfer.setData('itemID', id)
+      this.styleDragADropStore.changeState();
+      evt.dataTransfer.dropEffect = 'move';
+      evt.dataTransfer.effectAllowed = 'move';
+      evt.dataTransfer.setData('itemID', id);
+    },
+    endDrag() {
+      this.styleDragADropStore.changeState();
     },
   },
   setup() {
+    const styleDragADropStore = useDragADropStore();
+
+    const route = useRoute();
+    const pathBoolBasket = computed(() => { // отключаем Drag and Drop
+      if (route.path !== '/basket') {
+        return true;
+      }
+      else {
+        return false;
+      }
+    })
     return {
+      pathBoolBasket,
+      styleDragADropStore,
     }
   }
 })

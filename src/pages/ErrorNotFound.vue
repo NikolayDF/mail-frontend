@@ -4,11 +4,9 @@
       <div style="font-size: 30vh">
         404
       </div>
-
       <div class="text-h2" style="opacity:.8">
         Страница не найдена
       </div>
-
       <q-btn class="q-mt-xl" color="white" text-color="black" unelevated to="/" label="На главную" no-caps />
     </div>
   </div>

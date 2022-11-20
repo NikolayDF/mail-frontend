@@ -9,9 +9,9 @@
 
 <script>
 
-import { defineComponent } from 'vue'
-import { useBasketMailStore } from 'stores/basketMail'
-import MailComponent from 'components/MailComponent.vue'
+import { defineComponent } from 'vue';
+import { useBasketMailStore } from 'stores/basketMail';
+import MailComponent from 'components/MailComponent.vue';
 
 export default defineComponent({
   name: 'MailBasket',

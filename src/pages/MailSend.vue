@@ -10,8 +10,11 @@
 <script>
 
 import { defineComponent } from 'vue'
-import { useSendMailStore } from 'stores/sendMail'
+
 import MailComponent from 'components/MailComponent.vue'
+
+import { useSendMailStore } from 'src/stores/sendMail'
+import { useBasketMailStore } from 'stores/basketMail';
 
 export default defineComponent({
   name: 'MailSend',
@@ -21,12 +24,15 @@ export default defineComponent({
   },
   methods: {
     deleteMail(id) {
+      const mailObj = this.mail.get(id);
       this.mail.delete(id);
+      this.basketMail.add(mailObj);
     }
   },
   setup() {
     const mail = useSendMailStore();
-    return { mail };
+    const basketMail = useBasketMailStore();
+    return { mail, basketMail }
   }
 })
 </script>

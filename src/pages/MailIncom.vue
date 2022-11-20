@@ -9,8 +9,11 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { useInMailStore } from 'src/stores/inMail'
+
 import MailComponent from 'components/MailComponent.vue'
+
+import { useInMailStore } from 'src/stores/inMail'
+import { useBasketMailStore } from 'stores/basketMail';
 
 export default defineComponent({
   name: 'MailIncom',
@@ -20,13 +23,15 @@ export default defineComponent({
   },
   methods: {
     deleteMail(id) {
+      const mailObj = this.mail.get(id);
       this.mail.delete(id);
+      this.basketMail.add(mailObj);
     }
   },
   setup() {
     const mail = useInMailStore();
-
-    return { mail }
+    const basketMail = useBasketMailStore();
+    return { mail, basketMail }
   }
 })
 </script>

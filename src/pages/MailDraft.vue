@@ -10,8 +10,11 @@
 <script>
 
 import { defineComponent } from 'vue'
-import { useDraftMailStore } from 'stores/draftMail'
+
 import MailComponent from 'components/MailComponent.vue'
+
+import { useDraftMailStore } from 'src/stores/draftMail'
+import { useBasketMailStore } from 'stores/basketMail';
 
 export default defineComponent({
   name: 'MailDraft',
@@ -21,12 +24,15 @@ export default defineComponent({
   },
   methods: {
     deleteMail(id) {
+      const mailObj = this.mail.get(id);
       this.mail.delete(id);
+      this.basketMail.add(mailObj);
     }
   },
   setup() {
     const mail = useDraftMailStore();
-    return { mail };
+    const basketMail = useBasketMailStore();
+    return { mail, basketMail }
   }
 })
 </script>

@@ -7,36 +7,25 @@ export const useDraftMailStore = defineStore('draftMail', {
         {
           title: 'Я Отправил',
           message: 'ddddd draft',
-          id: '1',
+          id: 123,
         },
         {
           title: 'Отправил Отправил',
           message: 'ddddd draft',
-          id: '2',
+          id: 223,
         },
         {
           title: 'Письма Отправил',
           message: 'ddddd Отправил draft',
-          id: '3',
-        },
-        {
-          title: 'Я1',
-          message: 'ddddd Отправил',
-          id: '4',
-        },
-        {
-          title: 'Отправил1',
-          message: 'ddddd',
-          id: '5',
-        },
-        {
-          title: 'Письма1 Отправил',
-          message: 'ddddd Отправил',
-          id: '6',
+          id: 323,
         },]
     }
   },
   actions: {
+    get(id) {
+      const mailObj = this.mailData.find((mail) => mail.id == String(id));
+      return mailObj;
+    },
     add(mail) {
       this.mailData.push(mail);
     },

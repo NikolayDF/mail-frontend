@@ -25,8 +25,9 @@
             <q-item-label>Черновики</q-item-label>
           </q-item-section>
         </q-btn>
-        <q-btn to="/basket" exact style="width: 100%" :class="[path === '/basket' ? 'menu__button_active ' : '']"
-          @drop="onDrop($event, list)" @dragover.prevent @dragenter.prevent>
+        <q-btn to="/basket" exact style="width: 100%"
+          :class="[path === '/basket' ? 'menu__button_active ' : '', styleDragADropStore.styleBool ? 'menu__button_d-a-d-active' : '']"
+          @drop="onDrop($event)" @dragover.prevent @dragenter.prevent>
           <q-icon name="folder_delete" />
           <q-item-section>
             <q-item-label>Корзина</q-item-label>
@@ -53,10 +54,18 @@
 </template>
 
 <script>
+
 import { defineComponent, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
+
 import FormMail from 'src/components/FormSaveMail.vue';
+
 import { useInMailStore } from 'src/stores/inMail';
+import { useSendMailStore } from 'stores/sendMail';
+import { useDraftMailStore } from 'stores/draftMail';
+import { useBasketMailStore } from 'stores/basketMail';
+
+import { useDragADropStore } from 'src/stores/dragAdrop';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -65,29 +74,50 @@ export default defineComponent({
     FormMail,
   },
   methods: {
-    onDrop(evt, list) {
-      console.log(evt.dataTransfer.getData('itemID'))
-      const itemID = evt.dataTransfer.getData('itemID')
-      console.log('dspsdftv vtnjl elfktybz')
-      this.mail.delete(itemID)
-      /*const item = this.items.find((item) => item.id == itemID)
-      item.list = list*/
+    onDrop(evt) {
+      if (this.path === '/') {
+        const itemID = evt.dataTransfer.getData('itemID');
+        const mailObj = this.inMail.get(Number(itemID));
+        this.basketMail.add(mailObj);
+        this.inMail.delete(Number(itemID));
+      }
+      else if (this.path === '/send') {
+        const itemID = evt.dataTransfer.getData('itemID');
+        const mailObj = this.sendMail.get(Number(itemID));
+        this.basketMail.add(mailObj);
+        this.sendMail.delete(Number(itemID));
+      }
+      else if (this.path === '/draft') {
+        const itemID = evt.dataTransfer.getData('itemID');
+        const mailObj = this.draftMail.get(Number(itemID));
+        this.basketMail.add(mailObj);
+        this.draftMail.delete(Number(itemID));
+      }
     },
     popupClose() {
       this.popupOpen = false;
-      console.log('dd')
     },
   },
   setup() {
-    const mail = useInMailStore();
-    const route = useRoute();
+    const inMail = useInMailStore();
+    const sendMail = useSendMailStore();
+    const draftMail = useDraftMailStore();
+    const basketMail = useBasketMailStore();
 
-    const path = computed(() => route.path)
+    const styleDragADropStore = useDragADropStore();
+
+    const route = useRoute();
+    const path = computed(() => route.path);
+
     return {
-      mail,
+      inMail,
+      sendMail,
+      draftMail,
+      basketMail,
       drawerLeft: ref(false),
       popupOpen: ref(false),
       path,
+      styleDragADropStore,
     }
   }
 })
@@ -140,6 +170,10 @@ export default defineComponent({
 
 .menu__button_active {
   background-color: #b6b5b5;
+}
+
+.menu__button_d-a-d-active {
+  border: 3px solid rgb(245, 245, 38);
 }
 
 .menu__footer-button {

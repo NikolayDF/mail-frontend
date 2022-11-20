@@ -7,14 +7,13 @@ export const useBasketMailStore = defineStore('bascetMail', {
         {
           title: 'Я Отправил',
           message: 'ddddd draft',
-          id: '1',
+          id: 100,
         },
         {
           title: 'Delite',
           message: 'ddddd draft',
-          id: '2',
+          id: 200,
         },]
-
     }
   },
   actions: {
