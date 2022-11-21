@@ -1,6 +1,6 @@
 {
   "name": "quasar-project",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Quasar Project",
   "productName": "Quasar App",
   "author": "Nikolay Dolgov <koly201020@yandex.ru>",
@@ -28,7 +28,6 @@
   },
   "engines": {
     "node": "^18 || ^16 || ^14.19",
-    "npm": ">= 6.13.4",
-    "yarn": ">= 1.21.1"
+    "npm": ">= 6.13.4"
   }
 }

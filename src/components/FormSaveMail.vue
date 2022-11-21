@@ -3,22 +3,11 @@
     <q-form class="q-gutter-md form">
       <q-input filled label="Кому" v-model="address" lazy-rules style="width: 97%;"></q-input>
       <q-input filled label="Тема" v-model="theme" lazy-rules style="width: 97%;"></q-input>
-      <q-input filled type="textarea" v-model="message" class="form__text" rows="18" />
-      <q-btn-group class="fit  justify-between push square" style="box-shadow: none; width: 97% !important">
+      <q-input filled type="textarea" v-model="message" class="form__text" rows="16" />
+      <q-btn-group class="fit justify-between push square" style="box-shadow: none; width: 97% !important;">
         <q-btn class="form__button" label="Закрыть" type="button" color="grey-8" v-on:click="$emit('popup-close')">
         </q-btn>
-        <q-file filled bottom-slots v-model="model" label="Label" color="grey-8" counter>
-          <template v-slot:prepend>
-            <q-icon name="cloud_upload" @click.stop.prevent />
-          </template>
-          <template v-slot:append>
-            <q-icon name="close" @click.stop.prevent="model = null" class="cursor-pointer" />
-          </template>
-
-          <template v-slot:hint>
-            Field hint
-          </template>
-        </q-file>
+        <!--<q-file rounded outlined v-model="file" label="Rounded outlined" />-->
         <q-btn class="form__button" label="Сохранить" type="button" color="grey-8" @click="saveDraft"
           v-on:click="$emit('popup-close')"></q-btn>
       </q-btn-group>
@@ -58,7 +47,7 @@ export default defineComponent({
       this.message = "";
       this.id = 33333;
       this.sender = "mail@mail";
-      this.file = "";
+      this.file = FileList; // ?
       this.type = "draft";
       console.log(this.draft);
     }
@@ -72,11 +61,11 @@ export default defineComponent({
       message: "",
       id: 33333,
       sender: "mail@mail",
-      file: "",
+      file: FileList, // ?
       type: "draft",
     });
     const { address, theme, message, id, sender, file, type } = toRefs(draft);
-    return { address, theme, message, id, sender, file, type, draft, draftMail };
+    return { address, theme, message, id, sender, file, type, draft, draftMail, };
   }
 })
 </script>
@@ -93,13 +82,14 @@ export default defineComponent({
 }
 
 .form__button {
-  height: 30px;
+  height: 55px;
+  border-radius: 15px;
 }
 
 .form__text {
   margin: 20px auto 50px;
   width: 97%;
-  height: 51%;
+  height: 46%;
 }
 
 .popup {

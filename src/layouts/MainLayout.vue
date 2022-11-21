@@ -35,13 +35,13 @@
         </q-btn>
         <q-btn-group push class="menu__footer-button content-end" style="margin-top: auto;">
           <q-btn text-color="black" push label="Отправить" icon="send" />
-          <q-btn text-color="black" push label="Получить" icon="cached" />
+          <q-btn text-color="black" push label="Получить" icon="cached" @click="inComeGet" />
         </q-btn-group>
       </q-btn-group>
     </q-drawer>
 
     <q-btn round @click="popupOpen = !popupOpen" color="grey-6" class="menu__button-new-mail" icon="add" />
-    <FormMail v-model="popupOpen" :popupOpen="popupOpen" v-on:popup-close="popupClose" />
+    <FormMail :popupOpen="popupOpen" v-on:popup-close="popupClose" />
 
     <q-page-container>
       <router-view v-slot="{ Component }">
@@ -60,6 +60,8 @@ import { useRoute } from 'vue-router';
 
 import FormMail from 'src/components/FormSaveMail.vue';
 
+import { api } from '../utils/Api';
+
 import { useInMailStore } from 'src/stores/inMail';
 import { useSendMailStore } from 'stores/sendMail';
 import { useDraftMailStore } from 'stores/draftMail';
@@ -74,28 +76,47 @@ export default defineComponent({
     FormMail,
   },
   methods: {
-    onDrop(evt) {
+    onDrop(evt) { // дроп реализован только на корзину
+      let mailObj = {};
+      const itemID = evt.dataTransfer.getData('itemID');
       if (this.path === '/') {
-        const itemID = evt.dataTransfer.getData('itemID');
-        const mailObj = this.inMail.get(Number(itemID));
-        this.basketMail.add(mailObj);
+        mailObj = this.inMail.get(Number(itemID));
         this.inMail.delete(Number(itemID));
       }
       else if (this.path === '/send') {
-        const itemID = evt.dataTransfer.getData('itemID');
-        const mailObj = this.sendMail.get(Number(itemID));
-        this.basketMail.add(mailObj);
+        mailObj = this.sendMail.get(Number(itemID));
         this.sendMail.delete(Number(itemID));
       }
       else if (this.path === '/draft') {
-        const itemID = evt.dataTransfer.getData('itemID');
-        const mailObj = this.draftMail.get(Number(itemID));
-        this.basketMail.add(mailObj);
+        mailObj = this.draftMail.get(Number(itemID));
         this.draftMail.delete(Number(itemID));
       }
+      console.log(mailObj);
+      this.deliteMailPost(mailObj);
     },
     popupClose() {
       this.popupOpen = false;
+    },
+    inComeGet() { // получает список всех "входящих" и полностью обновляет вёрстку
+      api.inCome()
+        .then((res) => {
+          this.inMail.deleteAll();
+          this.inMail.addArray(res.message);
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    },
+    deliteMailPost(mailObj) { // добавляет запись в бд удалённых и обновляет вёрстку
+      console.log(mailObj);
+      api.postMailDelite(mailObj)
+        .then((res) => {
+          this.basketMail.add(mailObj);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     },
   },
   setup() {
