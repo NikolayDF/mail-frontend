@@ -16,6 +16,8 @@ import MailComponent from 'components/MailComponent.vue'
 import { useSendMailStore } from 'src/stores/sendMail'
 import { useBasketMailStore } from 'stores/basketMail';
 
+import { api } from '../utils/Api';
+
 export default defineComponent({
   name: 'MailSend',
 
@@ -25,8 +27,14 @@ export default defineComponent({
   methods: {
     deleteMail(id) {
       const mailObj = this.mail.get(id);
-      this.mail.delete(id);
-      this.basketMail.add(mailObj);
+      api.postMailDelite(mailObj, '/send')
+        .then((res) => {
+          this.basketMail.add(mailObj);
+          this.mail.delete(id);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     }
   },
   setup() {

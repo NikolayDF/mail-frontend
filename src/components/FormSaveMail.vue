@@ -21,6 +21,8 @@ import { defineComponent, reactive, toRefs } from 'vue'
 
 import { useDraftMailStore } from 'src/stores/draftMail'
 
+import { api } from '../utils/Api';
+
 export default defineComponent({
   name: 'FormMail',
   props: {
@@ -32,24 +34,28 @@ export default defineComponent({
   methods: {
     saveDraft() {
       const { address, theme, message, id, sender, file, type } = this.draft;
-      const newD = {
+      const newMail = {
         address: address,
         theme: theme,
         message: message,
         id: id,
         sender: sender,
         file: file,
-        type: type,
       }
-      this.draftMail.add(newD);
+      api.postMailDraft(newMail)
+        .then(() => {
+          this.draftMail.add(newMail);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
       this.address = "";
       this.theme = "";
       this.message = "";
       this.id = 33333;
-      this.sender = "mail@mail";
-      this.file = FileList; // ?
+      this.sender = "sender@mail";
+      this.file = ""; // не реализовано
       this.type = "draft";
-      console.log(this.draft);
     }
   },
   setup() {
@@ -59,9 +65,9 @@ export default defineComponent({
       address: "",
       theme: "",
       message: "",
-      id: 33333,
-      sender: "mail@mail",
-      file: FileList, // ?
+      id: Date.now(),
+      sender: "sender@mail",
+      file: "", // не реализовано
       type: "draft",
     });
     const { address, theme, message, id, sender, file, type } = toRefs(draft);

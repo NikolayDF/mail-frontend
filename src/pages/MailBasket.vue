@@ -13,6 +13,8 @@ import { defineComponent } from 'vue';
 import { useBasketMailStore } from 'stores/basketMail';
 import MailComponent from 'components/MailComponent.vue';
 
+import { api } from '../utils/Api';
+
 export default defineComponent({
   name: 'MailBasket',
 
@@ -21,7 +23,14 @@ export default defineComponent({
   },
   methods: {
     deleteMail(id) {
-      this.mail.delete(id);
+      const mailObj = this.mail.get(id);
+      api.postMailDelite(mailObj, '/basket')
+        .then((res) => {
+          this.mail.delete(id);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     }
   },
   setup() {

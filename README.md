@@ -2,40 +2,14 @@
 
 A Quasar Project
 
-## Install the dependencies
-```bash
-yarn
-# or
-npm install
-```
+## Чтобы развернуть проект локально необходимо
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
+- клонировать репозиторий (git clone git@github.com:NikolayDolgov/quasar-project.git)
+- установить зависимости (npm install)
+- запустить скрипт (quasar dev)
 
+## Особенности
 
-### Lint the files
-```bash
-yarn lint
-# or
-npm run lint
-```
-
-
-### Format the files
-```bash
-yarn format
-# or
-npm run format
-```
-
-
-
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+- frontend запускается на http://localhost:9000
+- сервер для проекта расположен по ссылке (server-for-quasar-project)[https://github.com/NikolayDolgov/server-for-quasar-project]
+- сервер запускается на http://localhost:9000

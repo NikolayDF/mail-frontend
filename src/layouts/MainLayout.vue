@@ -33,9 +33,15 @@
             <q-item-label>Корзина</q-item-label>
           </q-item-section>
         </q-btn>
+        <q-btn style="width: 100%" class="menu__button-update" @click="update">
+          <q-icon name="cached" />
+          <q-item-section>
+            <q-item-label>Вернуть БД и стейт в исходное состояние</q-item-label>
+          </q-item-section>
+        </q-btn>
         <q-btn-group push class="menu__footer-button content-end" style="margin-top: auto;">
-          <q-btn text-color="black" push label="Отправить" icon="send" />
-          <q-btn text-color="black" push label="Получить" icon="cached" @click="inComeGet" />
+          <q-btn text-color="black" push label="Отправить" icon="send" @click="send" />
+          <q-btn text-color="black" push label="Получить" icon="sync_alt" @click="inComeGet" />
         </q-btn-group>
       </q-btn-group>
     </q-drawer>
@@ -56,6 +62,7 @@
 <script>
 
 import { defineComponent, ref, computed } from 'vue';
+
 import { useRoute } from 'vue-router';
 
 import FormMail from 'src/components/FormSaveMail.vue';
@@ -75,10 +82,27 @@ export default defineComponent({
   components: {
     FormMail,
   },
+  created() { // обновляем корзину и отправленные с сервера только при первом создании копонента
+    this.stateUpdate();
+  },
   methods: {
+    // методы dragAndDrop
     onDrop(evt) { // дроп реализован только на корзину
-      let mailObj = {};
       const itemID = evt.dataTransfer.getData('itemID');
+      let mailObj = this.mailStateUpdate(itemID);
+      this.deliteMailPost(mailObj, this.path);
+    },
+    deliteMailPost(mailObj, path) { // добавляет запись в бд удалённых и обновляет вёрстку корзины
+      api.postMailDelite(mailObj, path)
+        .then(() => {
+          this.basketMail.add(mailObj);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    },
+    mailStateUpdate(itemID) { // удаляет из state объект по id, возвращает удалённый объект
+      let mailObj = {};
       if (this.path === '/') {
         mailObj = this.inMail.get(Number(itemID));
         this.inMail.delete(Number(itemID));
@@ -91,33 +115,73 @@ export default defineComponent({
         mailObj = this.draftMail.get(Number(itemID));
         this.draftMail.delete(Number(itemID));
       }
-      console.log(mailObj);
-      this.deliteMailPost(mailObj);
+      return mailObj;
     },
-    popupClose() {
+
+    // метод кноки формы
+    popupClose() { // закрывает форму
       this.popupOpen = false;
     },
+
+    // первая отрисовка
+    stateUpdate() { // обновляем стейты кроме стейта корзины
+
+      api.mailDeliteList()
+        .then((res) => {
+          this.basketMail.addArray(res.message);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      api.getSendList()
+        .then((res) => {
+          this.sendMail.addArray(res.message);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      api.getDraftList()
+        .then((res) => {
+          this.draftMail.addArray(res.message);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // методы кнопок меню
     inComeGet() { // получает список всех "входящих" и полностью обновляет вёрстку
       api.inCome()
         .then((res) => {
           this.inMail.deleteAll();
           this.inMail.addArray(res.message);
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);
         })
     },
-    deliteMailPost(mailObj) { // добавляет запись в бд удалённых и обновляет вёрстку
-      console.log(mailObj);
-      api.postMailDelite(mailObj)
-        .then((res) => {
-          this.basketMail.add(mailObj);
+    send() {
+      api.postMailSend(this.draftMail.mailData)
+        .then(() => {
+          this.sendMail.addArray(this.draftMail.mailData);
+          this.draftMail.deleteAll();
         })
         .catch((err) => {
           console.log(err);
         })
     },
+
+    update() { // возвращает БД в исходное состояние и перезагружает страницу
+      api.putUpdate()
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    }
   },
   setup() {
     const inMail = useInMailStore();
@@ -189,15 +253,26 @@ export default defineComponent({
   height: 100%;
 }
 
+.menu__button-update {
+  // стиль кнопки активного роута
+  position: fixed;
+  bottom: 50%;
+  right: 0;
+  z-index: 1;
+}
+
 .menu__button_active {
+  // стиль кнопки активного роута
   background-color: #b6b5b5;
 }
 
 .menu__button_d-a-d-active {
+  // стиль корзины, когда работает drag and drop
   border: 3px solid rgb(245, 245, 38);
 }
 
 .menu__footer-button {
+  // контейнер с 2-мя кнопками
   margin-top: 100px;
   height: 50px;
   width: 290px;
@@ -205,6 +280,7 @@ export default defineComponent({
 }
 
 .menu__button-open {
+  // кнопка меню
   position: absolute;
   width: 34px;
   left: 10px;
@@ -212,6 +288,7 @@ export default defineComponent({
 }
 
 .menu__button-new-mail {
+  // кнопка открытия черновика
   position: fixed;
   bottom: 20px;
   right: 100px;
