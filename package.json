@@ -1,9 +1,9 @@
 {
-  "name": "quasar-project",
-  "version": "0.0.2",
-  "description": "A Quasar Project",
+  "name": "mail-frontend",
+  "version": "0.0.3",
+  "description": "Почтовый сервис",
   "productName": "Quasar App",
-  "author": "Nikolay Dolgov <koly201020@yandex.ru>",
+  "author": "Dolgov",
   "private": true,
   "scripts": {
     "dev": "quasar dev",

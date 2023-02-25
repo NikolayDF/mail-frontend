@@ -222,7 +222,11 @@ export default defineComponent({
 }
 
 .page {
-  background-image: linear-gradient(to left, #d7d5d5, transparent, #d7d5d5);
+  /*background-image: linear-gradient(to left, #d7d5d5, transparent, #d7d5d5);*/
+  background-image: url('../images/background.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 .header {
@@ -233,14 +237,16 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   width: 100%;
-  background-image: linear-gradient(to left, #d7d5d5, #fff, #d7d5d5);
+  /*background-image: linear-gradient(to left, rgba(250, 250, 250, 0.526), rgba(255, 255, 255, .9), rgba(215, 213, 213, .9));*/
+  background: rgba(92, 217, 20, 0.2);
 }
 
 .header__title {
   margin: 0;
-  padding: 0;
-  font-size: 20px;
-  line-height: 50px;
+  padding: 0 100px 0;
+  font-size: 30px;
+  line-height: 70px;
+  background: linear-gradient(to left, rgba(92, 217, 20, 0.001), rgba(255, 255, 255, .7), rgb(255, 255, 255), rgba(255, 255, 255, .7), rgba(92, 217, 20, 0.001));
 }
 
 .menu {
@@ -251,6 +257,7 @@ export default defineComponent({
   border-radius: 0;
   width: 300px;
   height: 100%;
+  background: rgba(92, 217, 20, 0.2);
 }
 
 .menu__button-update {
@@ -282,9 +289,10 @@ export default defineComponent({
 .menu__button-open {
   // кнопка меню
   position: absolute;
-  width: 34px;
-  left: 10px;
-  top: 8px;
+  width: 50px;
+  left: 15px;
+  top: 20px;
+  background: radial-gradient(rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, .5), rgba(255, 255, 255, .1));
 }
 
 .menu__button-new-mail {
